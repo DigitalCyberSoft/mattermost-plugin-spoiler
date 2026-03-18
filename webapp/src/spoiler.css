@@ -1,0 +1,65 @@
+/* Spoiler base styles */
+.mm-spoiler {
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+/* ── Inline spoilers ── */
+.mm-spoiler--inline {
+    display: inline;
+    padding: 1px 6px;
+}
+
+/* ── Block spoilers ── */
+.mm-spoiler--block {
+    display: block;
+    padding: 4px 8px;
+    margin: 4px 0;
+}
+
+/* ── Hidden state ── */
+.mm-spoiler[data-spoiler="hidden"] {
+    background-color: var(--center-channel-color, #3d3d3d);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.mm-spoiler[data-spoiler="hidden"] .mm-spoiler__content {
+    display: none;
+}
+
+.mm-spoiler[data-spoiler="hidden"] .mm-spoiler__label {
+    display: inline;
+}
+
+/* SPOILER label */
+.mm-spoiler__label {
+    font-size: 0.75em;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--center-channel-bg, #fff);
+    pointer-events: none;
+    line-height: 1.6;
+}
+
+/* ── Revealed state ── */
+.mm-spoiler[data-spoiler="revealed"] {
+    background-color: rgba(128, 128, 128, 0.15);
+    user-select: auto;
+    -webkit-user-select: auto;
+}
+
+.mm-spoiler[data-spoiler="revealed"] .mm-spoiler__content {
+    display: inline;
+}
+
+.mm-spoiler--block[data-spoiler="revealed"] .mm-spoiler__content {
+    display: block;
+}
+
+.mm-spoiler[data-spoiler="revealed"] .mm-spoiler__label {
+    display: none;
+}
