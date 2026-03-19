@@ -126,11 +126,11 @@ function wrapBlockSpoiler(container, children, openIdx, openInfo, closeIdx, clos
     const openNode = children[openIdx];
     const closeNode = children[closeIdx];
 
-    // Remove the || from the opening node
+    // Remove the || from the opening node's text only
     removeTrailingPipes(openNode);
 
-    // Remove the || from the closing node
-    const closeIsEmpty = removeLeadingPipes(closeNode);
+    // Remove the || from the closing node's text only
+    removeLeadingPipes(closeNode);
 
     // Collect all nodes strictly between open and close
     const contentNodes = [];
@@ -160,9 +160,24 @@ function wrapBlockSpoiler(container, children, openIdx, openInfo, closeIdx, clos
     // Insert the wrapper after the open node
     openNode.after(wrapper);
 
-    // If the close node is now empty, remove it
-    if (closeIsEmpty) {
+    // Clean up the close node: if it only has whitespace and/or
+    // non-meaningful elements (like Edited button), hide it
+    const closeText = closeNode.textContent.trim();
+    if (!closeText) {
         closeNode.remove();
+    } else {
+        // Check if remaining content is just an Edited indicator
+        const hasOnlyEdited = closeNode.querySelector && closeNode.querySelector('.post-edited__indicator') &&
+            !closeNode.textContent.replace(/Edited/g, '').trim();
+        if (hasOnlyEdited) {
+            // Move the Edited button to after the spoiler wrapper
+            const editedBtn = closeNode.querySelector('.post-edited__indicator').closest('button') ||
+                closeNode.querySelector('.post-edited__indicator');
+            if (editedBtn) {
+                wrapper.after(editedBtn);
+            }
+            closeNode.remove();
+        }
     }
 }
 

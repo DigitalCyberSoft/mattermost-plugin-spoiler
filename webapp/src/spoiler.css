@@ -50,6 +50,7 @@
     background-color: rgba(128, 128, 128, 0.15);
     user-select: auto;
     -webkit-user-select: auto;
+    cursor: default;
 }
 
 .mm-spoiler[data-spoiler="revealed"] .mm-spoiler__content {
@@ -62,4 +63,37 @@
 
 .mm-spoiler[data-spoiler="revealed"] .mm-spoiler__label {
     display: none;
+}
+
+/* Ensure code blocks inside revealed spoilers keep their styling */
+.mm-spoiler[data-spoiler="revealed"] .post-code {
+    cursor: default;
+}
+
+.mm-spoiler[data-spoiler="revealed"] .post-code__overlay {
+    pointer-events: auto;
+}
+
+.mm-spoiler[data-spoiler="revealed"] .post-code__clipboard {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* ── Override Mattermost "Show More" truncation when spoiler is revealed ── */
+/* When a revealed block spoiler exists, remove all height limits on ancestors */
+.post-message:has(.mm-spoiler--block[data-spoiler="revealed"]) {
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.post-message:has(.mm-spoiler--block[data-spoiler="revealed"]) .post-message__text-container {
+    max-height: none !important;
+    overflow: visible !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+}
+
+/* Hide the "Show More" button when spoiler is revealed — it's redundant */
+.post-message:has(.mm-spoiler--block[data-spoiler="revealed"]) .post-collapse__show-more {
+    display: none !important;
 }
